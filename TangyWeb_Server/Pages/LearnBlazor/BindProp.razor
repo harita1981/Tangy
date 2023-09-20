@@ -1,0 +1,130 @@
+﻿
+
+@page "/learnBlazor/bindProp"
+
+<h3 class="text-success">Individual Product</h3>
+<hr />
+<div class="row">
+    <div class="col-6 border p-3">
+        <h3 class="text-primary">Product Summary</h3> <hr />
+        Name: @Product.Name<br />
+        Active: @(Product.IsActive ? "Active" : "InActive")<br />
+        Property Selected:
+        Price: @Product.Price<br />
+        This Product is: @Product.IsActive<br />
+        Property Selected: @selectedProp <br />
+        @if (!String.IsNullOrWhiteSpace(selectedProp))
+        {
+            <p>Property Value: @Product.ProductProperties.FirstOrDefault(u=>u.Key==selectedProp).Value</p>
+        }
+    </div>
+    <div class="col-6 border p-3">
+        <h3 class="text-primary">Product Playground</h3> <hr />
+        <div>Price: <input type="number" @bind-value="Product.Price" @bind-value:event="oninput" /><br /></div>
+        <div>
+            <label>Active:</label>
+            <input type="checkbox" @bind="Product.IsActive" />
+            <br />
+        </div>
+        <div>
+            Product Properties:
+
+            <select @bind="selectedProp">
+                @foreach (var prop in Product.ProductProperties)
+                {
+                    <option value="@prop.Key">@prop.Key</option>
+                }
+            </select>
+        </div>
+
+        @*<input type="number" @bind="Product.Price" @bind:event="oninput" /><br />*@
+    </div>
+</div>
+
+<div class="row border p-3 mb-1">
+    <h3 class="text-success">Product Table</h3><hr />
+    <table class="table table-striped">
+        <tbody>
+            @foreach (var obj in Products)
+
+            {
+                <tr>
+                    <td>
+                        <input type="text" @bind-value="obj.Name" @bind-value:event="oninput" />
+                    </td>
+                    <td>
+                        <input type="number" @bind-value="obj.Price" @bind-value:event="oninput" />
+                    </td>
+                    <td>
+                        <input type="checkbox" @bind-value="obj.IsActive" checked="@(obj.IsActive?"checked":null)"  />
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+        
+    </table>
+</div>
+
+<div class="row border p-3 ">
+    <h3>Product Summary</h3>
+    @foreach(var obj in Products)
+    {
+        <p>@obj.Name [@obj.Price] is @(obj.IsActive?"Active":"In Active")</p>
+    }
+</div>
+
+
+@code {
+    private string selectedProp = "";
+
+    Demo_Product Product = new()
+    {
+        Id=1,
+        Name="Rose Candle",
+        Price=10.99,
+        IsActive=true,
+        ProductProperties = new List<Demo_ProductProp>()
+        {
+            new Demo_ProductProp  {Id=1, Key="Color", Value="Black"},
+            new Demo_ProductProp  {Id=2, Key="Flavor", Value="Rose Jasmine"},
+            new Demo_ProductProp  {Id=3, Key="Size", Value="20oz"},
+        }
+    };
+
+    List<Demo_Product> Products = new();
+
+    protected override void OnInitialized()
+    {
+        Products.Add(new()
+            {
+                Id = 1,
+                Name = "Midnight Blaze",
+                Price = 12.99,
+                IsActive = false,
+                ProductProperties = new()
+                {
+                new Demo_ProductProp { Id = 1, Key = "Flavor", Value = "Rose"},
+                     new Demo_ProductProp { Id = 2, Key = "Size", Value = "20oz"},
+                    new Demo_ProductProp { Id = 3, Key = "Color", Value="Purple" }
+                }
+            });
+
+        Products.Add(new()
+            {
+                Id = 2,
+                Name = "Blossom Lily",
+                Price = 14.23,
+                IsActive = true,
+                ProductProperties = new()
+            {
+                new Demo_ProductProp { Id = 1, Key = "Flavor", Value = "Lily" },
+                new Demo_ProductProp { Id = 2, Key = "Size", Value = "18oz" },
+                new Demo_ProductProp {Id = 3,Key = "Color",Value = "White"}
+            }
+            });
+    }
+
+
+
+}

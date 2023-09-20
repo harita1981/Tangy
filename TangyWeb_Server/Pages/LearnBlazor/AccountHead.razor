@@ -1,0 +1,32 @@
+﻿@using Tangy_Models
+
+@page "/learnblazor/accounthead"
+
+<h3>Account Head</h3>
+
+Select Account Head (Key):
+<select>
+    @foreach(var obj in accountHead.AccountHeads)
+    {
+        <option value="@obj.Key">@obj.Key</option>
+    }
+</select><br />
+@*Value: @selectedAccountHead*@
+
+@*@if(String.IsNullOrWhiteSpace(selectedAccountHead)){
+    <p>Property Value: @accountHead.AccountHeads.FirstOrDefault(u=>u.Key == selectedAccountHead).Value</p>
+    }*@
+
+@code {
+    private string selectedAccountHead = "";
+    
+    Demo_AccountHead accountHead = new()
+    {
+        AccountHeads = new List<Demo_AccountHead>()
+        {
+            new Demo_AccountHead  {Id=1, Key="EmployeeBenefits", Value="Staff Basic Salary"},
+            new Demo_AccountHead  {Id=2, Key="Purchases", Value="Cement Purchase"},
+            new Demo_AccountHead  {Id=3, Key="Sale Income", Value="Biryani's and More"},
+        }
+    };
+}
